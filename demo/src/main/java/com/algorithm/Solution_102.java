@@ -24,6 +24,8 @@ import java.util.List;
  */
 public class Solution_102 {
     /**
+     * 广度优先搜索
+     *
      * Definition for a binary tree node.
      * public class TreeNode {
      *     int val;
@@ -43,10 +45,23 @@ public class Solution_102 {
             return null;
         }
         List<List<Integer>> res = new ArrayList<>();
-
-        return null;
+        traversal(res,root,0);
+        return res;
     }
-    public void addRecord(List<List<Integer>> res ,TreeNode left,TreeNode right){
 
+    public void traversal(List<List<Integer>> res,TreeNode root,int level){
+        if(root == null){
+            return;
+        }
+        List<Integer> list = null;
+        if (level < res.size()){
+            list = res.get(level);
+        }else {
+            list = new ArrayList<>();
+            res.add(list);
+        }
+        list.add(root.val);
+        traversal(res,root.left,level + 1);
+        traversal(res,root.right,level + 1);
     }
 }
