@@ -66,8 +66,6 @@ public class CountingSort {
             tmp[arr[i]]--;
         }
         // 拷贝到原数组
-        for (int i = 0; i < len; i++) {
-            arr[i] = r[i];
-        }
+        System.arraycopy(r, 0, arr, 0, len);
     }
 }
