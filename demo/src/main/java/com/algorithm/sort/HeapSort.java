@@ -22,6 +22,18 @@ public class HeapSort {
         int[] arr = {2, 5, 3, 0, 2, 3, 0, 3};
         sort(arr);
         System.out.println(Arrays.toString(arr));
+        Heap heap = new Heap(8);
+        heap.insert(1);
+        heap.insert(2);
+        heap.insert(3);
+        heap.insert(4);
+        heap.insert(5);
+        heap.insert(6);
+        heap.insert(7);
+        heap.insert(8);
+        heap.print();
+        heap.deleteMax();
+        heap.print();
     }
 
     public static void sort(int[] arr) {
@@ -36,7 +48,7 @@ public class HeapSort {
             heapify(arr, len - 1, i);
         }
         for (int i = 0; i < len; i++) {
-            System.out.println(arr[i]+" ");
+            System.out.println(arr[i] + " ");
         }
         // 2.排序
         int k = len - 1;
@@ -80,5 +92,82 @@ public class HeapSort {
         int tmp = arr[m];
         arr[m] = arr[n];
         arr[n] = tmp;
+    }
+}
+
+class Heap {
+    /**
+     * 存放数据
+     */
+    private int[] arr;
+    /**
+     * 数组容量
+     */
+    private int capacity = 8;
+    /**
+     * 当前存储数量
+     */
+    private int count;
+
+    public Heap(int capacity) {
+        this.capacity = capacity;
+        this.arr = new int[capacity + 1];
+        this.count = 0;
+    }
+
+    public void insert(int data) {
+        if (count >= capacity) {
+            return;
+        }
+        // 存放完全二叉树时，浪费了第一个数据的空间
+        ++count;
+        arr[count] = data;
+        int pos = count;
+        while (pos / 2 > 0 && arr[pos / 2] < data) {
+            swap(arr, pos / 2, pos);
+            pos = pos / 2;
+        }
+    }
+
+    public void deleteMax() {
+        if (count == 0) {
+            // 没有数据
+            return;
+        }
+        // 把最大的位置数据替换成最后一个元素，再依次堆化
+        arr[1] = arr[count];
+        --count;
+        heapify(arr, count, 1);
+    }
+
+    private void heapify(int[] arr, int count, int i) {
+        while (true) {
+            int maxPos = i;
+            if (i * 2 <= count && arr[i * 2] > arr[i]) {
+                maxPos = i * 2;
+            }
+            if (i * 2 + 1 <= count && arr[maxPos] < arr[i * 2 + 1]) {
+                maxPos = i * 2 + 1;
+            }
+            // 当前值就是最大值
+            if (maxPos == i) {
+                break;
+            }
+            swap(arr, maxPos, i);
+            i = maxPos;
+        }
+    }
+
+    public void swap(int[] arr, int m, int n) {
+        int tmp = arr[m];
+        arr[m] = arr[n];
+        arr[n] = tmp;
+    }
+
+    public void print() {
+        for (int i = 1; i <= count; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
     }
 }
